@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+  <mvc:annotation-driven/>
+  <context:component-scan base-package="com.exadel.controller"/>
+
+  <bean id="gDriveServiceImpl" class="com.exadel.service.impl.GDriveServiceImpl">
+    <property name="clientId" value="361322856789-4aeoe00l0ts97qiecu89u7ijpb66rp1f.apps.googleusercontent.com"/>
+    <property name="clientSecret" value="TiR9bq-RQZeJK44UpbDQGMae"/>
+    <property name="redirectUri" value="http://localhost:8080/gdrive/acceptAuthCode"/>
+  </bean>
+
+  <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="prefix" value="/WEB-INF/jsp/"/>
+    <property name="suffix" value=".jsp"/>
+  </bean>
+</beans>

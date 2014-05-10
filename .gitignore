@@ -1,0 +1,15 @@
+*.class
+
+# IDE specific files #
+.idea/*
+*/.idea/*
+*.iml
+*.ipr
+
+target/*
+*/target/*
+
+# Package Files #
+*.jar
+*.war
+*.ear
