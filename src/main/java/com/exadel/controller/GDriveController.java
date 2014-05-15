@@ -3,6 +3,7 @@ package com.exadel.controller;
 import com.exadel.service.GDriveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,14 +24,34 @@ public class GDriveController {
     }
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.GET)
-    public String redirectToAuthUrl() {
-        return "redirect:" + googleDriveService.getAuthorizationUrl();
+    public String redirectToAuthUrl(Model model) {
+        if (googleDriveService.hasAccessToken()) {
+            model.addAttribute("errorMessage", "You already have authorized");
+            return "index";
+        } else {
+            return "redirect:" + googleDriveService.getAuthorizationUrl();
+        }
     }
 
     @RequestMapping(value = "/acceptAuthCode", method = RequestMethod.GET)
     @ResponseBody
     public void finishDriveInit(@RequestParam String code) {
         googleDriveService.initAuthToken(code);
+    }
+
+    @RequestMapping(value = "/getTokens", method = RequestMethod.GET)
+    @ResponseBody
+    public String getTokens() {
+        String response;
+
+        if (googleDriveService.hasAccessToken()) {
+            response = "Access token: " + googleDriveService.getAccessToken() + "/n" +
+                              "Refresh token: " + googleDriveService.getRefreshToken();
+        } else {
+            response = "You are not authorized";
+        }
+
+        return response;
     }
 
     @RequestMapping(value = "/testUpload", method = RequestMethod.GET)

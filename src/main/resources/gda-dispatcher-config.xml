@@ -9,10 +9,14 @@
   <context:component-scan base-package="com.exadel.controller"/>
 
   <bean id="gDriveServiceImpl" class="com.exadel.service.impl.GDriveServiceImpl">
-    <property name="clientId" value="361322856789-4aeoe00l0ts97qiecu89u7ijpb66rp1f.apps.googleusercontent.com"/>
-    <property name="clientSecret" value="TiR9bq-RQZeJK44UpbDQGMae"/>
+    <property name="clientId" value="553246933889-agpcqbmg17febkrhg5jfv7p1mq1tgkn9.apps.googleusercontent.com"/>
+    <property name="clientSecret" value="5Loi-tzE3G5OAiUzrJaS3t0S"/>
     <property name="redirectUri" value="http://localhost:8080/gdrive/acceptAuthCode"/>
+<!--    <property name="accessToken" value=""/>
+    <property name="refreshToken" value=""/>-->
   </bean>
+
+  <mvc:resources mapping="/resources/**" location="/resources/"/>
 
   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
     <property name="prefix" value="/WEB-INF/jsp/"/>

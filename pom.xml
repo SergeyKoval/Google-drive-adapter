@@ -37,5 +37,10 @@
       <artifactId>google-http-client-jackson2</artifactId>
       <version>${project.jackson.version}</version>
     </dependency>
+    <dependency>
+      <groupId>jstl</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.2</version>
+    </dependency>
   </dependencies>
 </project>

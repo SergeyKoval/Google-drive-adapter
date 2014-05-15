@@ -23,11 +23,14 @@ public class GDriveServiceImpl implements GDriveService {
     private String clientSecret;
     private String redirectUri;
 
+    private String accessToken;
+    private String refreshToken;
+
     private HttpTransport httpTransport = new NetHttpTransport();
     private JsonFactory jsonFactory = new JacksonFactory();
 
     private GoogleAuthorizationCodeFlow flow;
-    private GoogleCredential authToken;
+    private GoogleCredential credential;
 
     private Drive driveApi;
 
@@ -48,8 +51,13 @@ public class GDriveServiceImpl implements GDriveService {
     public void initAuthToken(String code) {
         try {
             GoogleTokenResponse tokenResponse = flow.newTokenRequest(code).setRedirectUri(redirectUri).execute();
-            authToken = new GoogleCredential.Builder().build().setFromTokenResponse(tokenResponse);
-            driveApi = new Drive.Builder(httpTransport, jsonFactory, authToken).build();
+
+            accessToken = tokenResponse.getAccessToken();
+            refreshToken = tokenResponse.getRefreshToken();
+
+            credential = new GoogleCredential.Builder().setJsonFactory(jsonFactory).setTransport(httpTransport)
+                    .setClientSecrets(clientId, clientSecret).build().setFromTokenResponse(tokenResponse);
+            driveApi = new Drive.Builder(httpTransport, jsonFactory, credential).build();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -99,8 +107,24 @@ public class GDriveServiceImpl implements GDriveService {
         this.redirectUri = redirectUri;
     }
 
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
     @Override
-    public boolean hasAuthToken() {
-        return authToken == null;
+    public boolean hasAccessToken() {
+        return (accessToken != null) && (refreshToken != null);
     }
 }
